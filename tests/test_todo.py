@@ -24,6 +24,12 @@ class TodoTest(unittest.TestCase):
     def test_a_missing_file_is_an_empty_list(self):
         self.assertEqual(todo.load(self.file), [])
 
+    def test_an_empty_file_is_an_empty_list(self):
+        Path(self.file).write_text("", encoding="utf-8")
+        self.assertEqual(self.run_cli("list"), (0, ""))
+        self.assertEqual(self.run_cli("add", "buy milk")[0], 0)
+        self.assertEqual(self.run_cli("list"), (0, "1. [ ] buy milk\n"))
+
     def test_add_then_list(self):
         self.assertEqual(self.run_cli("add", "buy milk")[0], 0)
         self.assertEqual(self.run_cli("add", "call home")[0], 0)
