@@ -48,6 +48,30 @@ class TodoTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             todo.add([], "   ")
 
+    def add_three(self):
+        self.run_cli("add", "buy milk")
+        self.run_cli("add", "call home")
+        self.run_cli("add", "walk dog")
+
+    def test_remove_deletes_the_item_and_renumbers_the_rest(self):
+        self.add_three()
+        self.assertEqual(self.run_cli("remove", "2")[0], 0)
+        self.assertEqual(
+            self.run_cli("list"), (0, "1. [ ] buy milk\n2. [ ] walk dog\n")
+        )
+
+    def test_remove_refuses_a_number_out_of_range_and_leaves_the_file_unchanged(self):
+        self.add_three()
+        before = Path(self.file).read_text(encoding="utf-8")
+        self.assertEqual(self.run_cli("remove", "0")[0], 1)
+        self.assertEqual(Path(self.file).read_text(encoding="utf-8"), before)
+        self.assertEqual(self.run_cli("remove", "4")[0], 1)
+        self.assertEqual(Path(self.file).read_text(encoding="utf-8"), before)
+        self.assertEqual(
+            self.run_cli("list"),
+            (0, "1. [ ] buy milk\n2. [ ] call home\n3. [ ] walk dog\n"),
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
