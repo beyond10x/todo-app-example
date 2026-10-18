@@ -1,4 +1,5 @@
 import io
+import subprocess
 import tempfile
 import unittest
 from contextlib import redirect_stdout
@@ -43,6 +44,32 @@ class TodoTest(unittest.TestCase):
         self.run_cli("add", "buy milk")
         self.assertEqual(self.run_cli("done", "2")[0], 1)
         self.assertEqual(self.run_cli("done", "0")[0], 1)
+
+    def run_process(self, *args):
+        return subprocess.run(
+            [str(Path(todo.__file__).resolve()), "--file", self.file, *args],
+            capture_output=True,
+            text=True,
+        )
+
+    def test_remove_renumbers_remaining_items(self):
+        for text in ("buy milk", "call home", "walk dog"):
+            self.assertEqual(self.run_process("add", text).returncode, 0)
+        self.assertEqual(self.run_process("remove", "2").returncode, 0)
+        result = self.run_process("list")
+        self.assertEqual(result.returncode, 0)
+        self.assertEqual(result.stdout, "1. [ ] buy milk\n2. [ ] walk dog\n")
+
+    def test_remove_refuses_unknown_numbers_without_changing_file(self):
+        for text in ("buy milk", "call home", "walk dog"):
+            self.assertEqual(self.run_process("add", text).returncode, 0)
+        before = Path(self.file).read_bytes()
+        for number in ("0", "4"):
+            with self.subTest(number=number):
+                result = self.run_process("remove", number)
+                self.assertEqual(result.returncode, 1)
+                self.assertEqual(result.stderr, f"todo: there is no todo {number}\n")
+                self.assertEqual(Path(self.file).read_bytes(), before)
 
     def test_add_refuses_empty_text(self):
         with self.assertRaises(ValueError):
