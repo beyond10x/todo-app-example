@@ -5,8 +5,11 @@ A scratch repository for takt's live trials. `README.md` is for people.
 ## Commands
 
 ```
-./check.sh           # the tests; the gate (.engineering/gates.yaml) runs the same script
+./check.sh           # the tests
+./docs-check.sh      # README.md shows every command of todo.py
 ```
+
+The gate (`.engineering/gates.yaml`) and CI run both scripts.
 
 ## Rules
 

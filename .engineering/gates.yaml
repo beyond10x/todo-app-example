@@ -5,3 +5,7 @@ gates:
     text: The unit tests pass.
     assertions:
       - 'process.succeeded("check")'
+  - id: docs
+    text: README.md shows every command todo.py has.
+    assertions:
+      - 'process.succeeded("docs")'

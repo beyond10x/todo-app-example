@@ -2,3 +2,5 @@ format: engineering-assertions-project/1
 commands:
   check:
     executable: check.sh
+  docs:
+    executable: docs-check.sh

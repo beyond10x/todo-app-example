@@ -19,3 +19,5 @@ jobs:
           persist-credentials: false
       - name: check
         run: ./check.sh
+      - name: docs
+        run: ./docs-check.sh
