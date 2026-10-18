@@ -2,7 +2,7 @@
 format: aep.planning-md/3
 id: story:storage-module
 kind: story
-status: proposed
+status: active
 title: Move load and save into storage.py, with an atomic save
 summary: a refactor that keeps every output, exit code and file byte; save renames a new file over the old
 scope:
@@ -12,9 +12,10 @@ scope:
   path: tests/test_storage.py
 - confidence: cited
   path: todo.py
-revision: 3
+revision: 4
 transitions:
 - {from: "draft", to: "proposed", at: "2026-10-18T20:38:00Z", actor: "human:timo", revision: 3}
+- {from: "proposed", to: "active", at: "2026-10-18T20:46:10Z", actor: "human:timo", revision: 4, executor: "agent:takt"}
 ---
 # Story: storage-module
 
