@@ -1,0 +1,4 @@
+format: engineering-assertions-project/1
+commands:
+  check:
+    executable: check.sh

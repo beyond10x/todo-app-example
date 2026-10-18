@@ -1,0 +1,7 @@
+format: engineering-gates/1
+language: canon-expr/1
+gates:
+  - id: check
+    text: The unit tests pass.
+    assertions:
+      - 'process.succeeded("check")'
