@@ -1,0 +1,12 @@
+{
+  "at": "2026-10-18T20:34:13Z",
+  "actor": "human:timo",
+  "artifact": "story:remove-a-todo",
+  "kind": "story",
+  "revision": 4,
+  "change": {
+    "change": "evidence",
+    "kind": "test_result",
+    "source": "./check.sh at 5796551 (main, after pull request 1 merged as 827016f): 7 tests OK"
+  }
+}
