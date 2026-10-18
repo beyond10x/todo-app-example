@@ -48,6 +48,24 @@ class TodoTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             todo.add([], "   ")
 
+    def test_remove_deletes_the_item_and_renumbers_the_rest(self):
+        self.run_cli("add", "buy milk")
+        self.run_cli("add", "call home")
+        self.run_cli("add", "water plants")
+        self.assertEqual(self.run_cli("remove", "2")[0], 0)
+        self.assertEqual(
+            self.run_cli("list"), (0, "1. [ ] buy milk\n2. [ ] water plants\n")
+        )
+
+    def test_remove_refuses_a_number_out_of_range_and_keeps_the_file(self):
+        self.run_cli("add", "buy milk")
+        self.run_cli("add", "call home")
+        self.run_cli("add", "water plants")
+        before = Path(self.file).read_text(encoding="utf-8")
+        self.assertEqual(self.run_cli("remove", "0")[0], 1)
+        self.assertEqual(self.run_cli("remove", "4")[0], 1)
+        self.assertEqual(Path(self.file).read_text(encoding="utf-8"), before)
+
 
 if __name__ == "__main__":
     unittest.main()
