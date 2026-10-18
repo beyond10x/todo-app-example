@@ -8,6 +8,7 @@ ready stories, a gate, CI on every pull request, and merges through the bot rout
 ./todo.py add "buy milk"
 ./todo.py list
 ./todo.py done 1
+./todo.py remove 1
 ./check.sh            # the tests
 ```
 
