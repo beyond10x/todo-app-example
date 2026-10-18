@@ -2,23 +2,12 @@
 """A todo list kept in a JSON file: add an item, list the items, mark one done, remove one."""
 
 import argparse
-import json
 import os
 import sys
-from pathlib import Path
+
+from storage import load, save
 
 DEFAULT_FILE = "todo.json"
-
-
-def load(path):
-    path = Path(path)
-    if not path.exists():
-        return []
-    return json.loads(path.read_text(encoding="utf-8"))
-
-
-def save(path, items):
-    Path(path).write_text(json.dumps(items, indent=2) + "\n", encoding="utf-8")
 
 
 def add(items, text):
