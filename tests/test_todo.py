@@ -39,6 +39,23 @@ class TodoTest(unittest.TestCase):
             self.run_cli("list"), (0, "1. [ ] buy milk\n2. [x] call home\n")
         )
 
+    def test_remove_deletes_item_and_renumbers_remaining_items(self):
+        for text in ("buy milk", "call home", "read book"):
+            self.assertEqual(self.run_cli("add", text)[0], 0)
+        self.assertEqual(self.run_cli("remove", "2")[0], 0)
+        self.assertEqual(
+            self.run_cli("list"), (0, "1. [ ] buy milk\n2. [ ] read book\n")
+        )
+
+    def test_remove_refuses_out_of_range_numbers_without_changing_file(self):
+        for text in ("buy milk", "call home", "read book"):
+            self.assertEqual(self.run_cli("add", text)[0], 0)
+        original = Path(self.file).read_bytes()
+        for number in ("0", "4"):
+            with self.subTest(number=number):
+                self.assertEqual(self.run_cli("remove", number)[0], 1)
+                self.assertEqual(Path(self.file).read_bytes(), original)
+
     def test_done_refuses_a_number_out_of_range(self):
         self.run_cli("add", "buy milk")
         self.assertEqual(self.run_cli("done", "2")[0], 1)
