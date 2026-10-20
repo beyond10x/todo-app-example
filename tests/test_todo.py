@@ -48,6 +48,23 @@ class TodoTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             todo.add([], "   ")
 
+    def test_remove_renumbers_remaining_items(self):
+        for text in ("first", "second", "third"):
+            self.assertEqual(self.run_cli("add", text)[0], 0)
+        self.assertEqual(self.run_cli("remove", "2")[0], 0)
+        self.assertEqual(
+            self.run_cli("list"), (0, "1. [ ] first\n2. [ ] third\n")
+        )
+
+    def test_remove_refuses_out_of_range_without_changing_file(self):
+        for text in ("first", "second", "third"):
+            self.assertEqual(self.run_cli("add", text)[0], 0)
+        before = Path(self.file).read_bytes()
+        for number in ("0", "4"):
+            with self.subTest(number=number):
+                self.assertEqual(self.run_cli("remove", number)[0], 1)
+                self.assertEqual(Path(self.file).read_bytes(), before)
+
 
 if __name__ == "__main__":
     unittest.main()
