@@ -50,7 +50,7 @@ class TodoTest(unittest.TestCase):
 
         self.assertEqual(self.run_cli("remove", "2")[0], 0)
         self.assertEqual(
-            self.run_cli("list"), (0, "1. [ ] first\\n2. [ ] third\\n")
+            self.run_cli("list"), (0, "1. [ ] first\n2. [ ] third\n")
         )
 
     def test_remove_refuses_out_of_range_number_without_changing_file(self):
