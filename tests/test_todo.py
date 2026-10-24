@@ -44,6 +44,34 @@ class TodoTest(unittest.TestCase):
         self.assertEqual(self.run_cli("done", "2")[0], 1)
         self.assertEqual(self.run_cli("done", "0")[0], 1)
 
+    def test_remove_reindexes_remaining_items(self):
+        self.run_cli("add", "first")
+        self.run_cli("add", "second")
+        self.run_cli("add", "third")
+
+        self.assertEqual(self.run_cli("remove", "2")[0], 0)
+        self.assertEqual(
+            self.run_cli("list"), (0, "1. [ ] first\n2. [ ] third\n")
+        )
+
+    def test_remove_refuses_zero_without_changing_the_file(self):
+        self.run_cli("add", "first")
+        self.run_cli("add", "second")
+        self.run_cli("add", "third")
+        original = Path(self.file).read_bytes()
+
+        self.assertEqual(self.run_cli("remove", "0")[0], 1)
+        self.assertEqual(Path(self.file).read_bytes(), original)
+
+    def test_remove_refuses_number_after_list_without_changing_file(self):
+        self.run_cli("add", "first")
+        self.run_cli("add", "second")
+        self.run_cli("add", "third")
+        original = Path(self.file).read_bytes()
+
+        self.assertEqual(self.run_cli("remove", "4")[0], 1)
+        self.assertEqual(Path(self.file).read_bytes(), original)
+
     def test_add_refuses_empty_text(self):
         with self.assertRaises(ValueError):
             todo.add([], "   ")
