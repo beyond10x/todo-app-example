@@ -36,6 +36,13 @@ def done(items, number):
     return items
 
 
+def remove(items, number):
+    if number < 1 or number > len(items):
+        raise ValueError(f"there is no todo {number}")
+    items.pop(number - 1)
+    return items
+
+
 def render(items):
     return [
         f"{number}. [{'x' if item['done'] else ' '}] {item['text']}"
@@ -52,6 +59,8 @@ def main(argv=None):
     add_command.add_argument("text")
     done_command = commands.add_parser("done")
     done_command.add_argument("number", type=int)
+    remove_command = commands.add_parser("remove")
+    remove_command.add_argument("number", type=int)
     args = parser.parse_args(argv)
 
     items = load(args.file)
@@ -60,6 +69,8 @@ def main(argv=None):
             save(args.file, add(items, args.text))
         elif args.command == "done":
             save(args.file, done(items, args.number))
+        elif args.command == "remove":
+            save(args.file, remove(items, args.number))
         else:
             for line in render(items):
                 print(line)
