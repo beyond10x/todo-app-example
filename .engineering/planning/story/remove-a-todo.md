@@ -2,7 +2,7 @@
 format: aep.planning-md/3
 id: story:remove-a-todo
 kind: story
-status: proposed
+status: active
 title: Remove a todo by its number
 summary: todo.py remove N deletes item N; an unknown number is refused
 scope:
@@ -10,9 +10,10 @@ scope:
   path: tests/test_todo.py
 - confidence: cited
   path: todo.py
-revision: 3
+revision: 4
 transitions:
 - {from: "draft", to: "proposed", at: "2026-10-18T09:25:05Z", actor: "human:timo", revision: 3}
+- {from: "proposed", to: "active", at: "2026-10-26T19:19:40Z", actor: "human:timo", revision: 4, executor: "agent:takt"}
 ---
 # Story: remove-a-todo
 
