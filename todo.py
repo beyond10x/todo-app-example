@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""A todo list kept in a JSON file: add an item, list the items, mark one done."""
+"""A todo list kept in a JSON file: add, list, mark done, or remove an item."""
 
 import argparse
 import json
