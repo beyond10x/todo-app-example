@@ -1,0 +1,13 @@
+{
+  "at": "2026-10-27T17:51:42Z",
+  "actor": "agent:takt",
+  "artifact": "story:remove-a-todo",
+  "kind": "story",
+  "revision": 4,
+  "change": {
+    "change": "evidence",
+    "kind": "test_result",
+    "source": "takt",
+    "reference": ".takt/cases/scenario-1-trial-334/evidence/0005-test-result-7.json#sha256=f54d7e7f9a5e720f6ba6e2dc86cf94a7c91af29213ca31e5208437c1e644edf1&result=pass&revision=50e52f593c9989cd5dbec17ae9dfa8f867695c51&producer=takt.tests-run"
+  }
+}
