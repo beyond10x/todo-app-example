@@ -1,0 +1,13 @@
+{
+  "at": "2026-10-27T17:50:14Z",
+  "actor": "agent:takt-trial",
+  "artifact": "story:remove-a-todo",
+  "kind": "story",
+  "revision": 4,
+  "change": {
+    "change": "evidence",
+    "kind": "approval",
+    "source": "takt approve repository.merge --by agent:takt-trial at b81da046453952533662aa7eb9a2d579d9a38bb0",
+    "reference": "scenario-1-trial-333/authority.yaml"
+  }
+}
