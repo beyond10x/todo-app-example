@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""A todo list kept in a JSON file: add an item, list the items, mark one done, remove one."""
+"""A todo list kept in a JSON file: add an item, list the items, mark one done or undo it, remove one."""
 
 import argparse
 import json
@@ -36,6 +36,13 @@ def done(items, number):
     return items
 
 
+def undo(items, number):
+    if number < 1 or number > len(items):
+        raise ValueError(f"there is no todo {number}")
+    items[number - 1]["done"] = False
+    return items
+
+
 def remove(items, number):
     if number < 1 or number > len(items):
         raise ValueError(f"there is no todo {number}")
@@ -59,6 +66,8 @@ def main(argv=None):
     add_command.add_argument("text")
     done_command = commands.add_parser("done")
     done_command.add_argument("number", type=int)
+    undo_command = commands.add_parser("undo")
+    undo_command.add_argument("number", type=int)
     remove_command = commands.add_parser("remove")
     remove_command.add_argument("number", type=int)
     args = parser.parse_args(argv)
@@ -69,6 +78,8 @@ def main(argv=None):
             save(args.file, add(items, args.text))
         elif args.command == "done":
             save(args.file, done(items, args.number))
+        elif args.command == "undo":
+            save(args.file, undo(items, args.number))
         elif args.command == "remove":
             save(args.file, remove(items, args.number))
         else:
