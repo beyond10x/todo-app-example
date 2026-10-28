@@ -1,7 +1,8 @@
 import io
+import json
 import tempfile
 import unittest
-from contextlib import redirect_stdout
+from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
 
 import todo
@@ -65,6 +66,57 @@ class TodoTest(unittest.TestCase):
     def test_add_refuses_empty_text(self):
         with self.assertRaises(ValueError):
             todo.add([], "   ")
+
+    def add_three_priorities(self):
+        self.run_cli("add", "water plants", "--priority", "low")
+        self.run_cli("add", "call home")
+        self.run_cli("add", "buy milk", "--priority", "high")
+
+    def test_list_shows_a_priority_that_is_not_normal(self):
+        self.add_three_priorities()
+        self.assertEqual(
+            self.run_cli("list"),
+            (0, "1. [ ] (low) water plants\n2. [ ] call home\n3. [ ] (high) buy milk\n"),
+        )
+
+    def test_list_sorted_by_priority_keeps_each_number(self):
+        self.add_three_priorities()
+        self.run_cli("add", "pay rent", "--priority", "high")
+        self.assertEqual(
+            self.run_cli("list", "--sort", "priority"),
+            (
+                0,
+                "3. [ ] (high) buy milk\n4. [ ] (high) pay rent\n"
+                "2. [ ] call home\n1. [ ] (low) water plants\n",
+            ),
+        )
+
+    def test_done_acts_on_the_number_the_sorted_list_shows(self):
+        self.add_three_priorities()
+        self.assertEqual(self.run_cli("done", "3")[0], 0)
+        self.assertEqual(
+            self.run_cli("list", "--sort", "priority"),
+            (0, "3. [x] (high) buy milk\n2. [ ] call home\n1. [ ] (low) water plants\n"),
+        )
+
+    def test_add_refuses_an_unknown_priority(self):
+        self.run_cli("add", "buy milk")
+        before = Path(self.file).read_text(encoding="utf-8")
+        with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit) as raised:
+            self.run_cli("add", "call home", "--priority", "urgent")
+        self.assertEqual(raised.exception.code, 2)
+        self.assertEqual(Path(self.file).read_text(encoding="utf-8"), before)
+
+    def test_a_file_without_priorities_lists_as_before(self):
+        Path(self.file).write_text(
+            json.dumps(
+                [{"text": "buy milk", "done": False}, {"text": "call home", "done": True}]
+            ),
+            encoding="utf-8",
+        )
+        expected = "1. [ ] buy milk\n2. [x] call home\n"
+        self.assertEqual(self.run_cli("list"), (0, expected))
+        self.assertEqual(self.run_cli("list", "--sort", "priority"), (0, expected))
 
 
 if __name__ == "__main__":
