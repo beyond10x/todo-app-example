@@ -1,0 +1,13 @@
+{
+  "at": "2026-10-28T06:39:42Z",
+  "actor": "agent:takt-trial",
+  "artifact": "story:storage-module",
+  "kind": "story",
+  "revision": 4,
+  "change": {
+    "change": "evidence",
+    "kind": "approval",
+    "source": "takt approve repository.merge --by agent:takt-trial at 3b092fa65cdbc6accdd56f2207dffb41213cff45",
+    "reference": "scenario-4-trial-337/authority.yaml"
+  }
+}

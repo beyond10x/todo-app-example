@@ -1,0 +1,13 @@
+{
+  "at": "2026-10-28T06:38:45Z",
+  "actor": "agent:takt",
+  "artifact": "story:storage-module",
+  "kind": "story",
+  "revision": 4,
+  "change": {
+    "change": "evidence",
+    "kind": "test_result",
+    "source": "takt",
+    "reference": ".takt/cases/scenario-4-trial-337/evidence/0005-test-result-7.json#sha256=3aef05b21e579e054a9536ffc8f745dd612cf210da87b882b18620f39b5b251f&result=pass&revision=3b092fa65cdbc6accdd56f2207dffb41213cff45&producer=takt.tests-run"
+  }
+}
