@@ -2,7 +2,7 @@
 format: aep.planning-md/3
 id: story:empty-or-broken-file
 kind: story
-status: proposed
+status: active
 title: An empty or broken todo.json is handled, not a traceback
 summary: an empty file is an empty list; a file that is not a todo list is refused with exit 1 and left unchanged
 scope:
@@ -10,9 +10,10 @@ scope:
   path: tests/test_todo.py
 - confidence: cited
   path: todo.py
-revision: 3
+revision: 4
 transitions:
 - {from: "draft", to: "proposed", at: "2026-10-18T20:36:37Z", actor: "human:timo", revision: 3}
+- {from: "proposed", to: "active", at: "2026-10-28T06:35:14Z", actor: "human:timo", revision: 4, executor: "agent:takt"}
 ---
 # Story: empty-or-broken-file
 
