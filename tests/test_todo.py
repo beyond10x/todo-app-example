@@ -1,7 +1,7 @@
 import io
 import tempfile
 import unittest
-from contextlib import redirect_stdout
+from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
 
 import todo
@@ -60,6 +60,36 @@ class TodoTest(unittest.TestCase):
         before = Path(self.file).read_text(encoding="utf-8")
         self.assertEqual(self.run_cli("remove", "0")[0], 1)
         self.assertEqual(self.run_cli("remove", "4")[0], 1)
+        self.assertEqual(Path(self.file).read_text(encoding="utf-8"), before)
+
+    def test_undo_marks_a_done_item_not_done(self):
+        self.run_cli("add", "buy milk")
+        self.run_cli("add", "call home")
+        self.run_cli("add", "water plants")
+        self.run_cli("done", "2")
+        self.assertEqual(self.run_cli("undo", "2")[0], 0)
+        self.assertEqual(
+            self.run_cli("list"),
+            (0, "1. [ ] buy milk\n2. [ ] call home\n3. [ ] water plants\n"),
+        )
+
+    def test_undo_of_an_item_not_done_changes_nothing(self):
+        self.run_cli("add", "buy milk")
+        self.run_cli("add", "call home")
+        before = Path(self.file).read_text(encoding="utf-8")
+        self.assertEqual(self.run_cli("undo", "1")[0], 0)
+        self.assertEqual(Path(self.file).read_text(encoding="utf-8"), before)
+
+    def test_undo_refuses_a_number_out_of_range(self):
+        self.run_cli("add", "buy milk")
+        self.run_cli("add", "call home")
+        self.run_cli("add", "water plants")
+        before = Path(self.file).read_text(encoding="utf-8")
+        for number in ("0", "4"):
+            err = io.StringIO()
+            with redirect_stderr(err):
+                self.assertEqual(self.run_cli("undo", number)[0], 1)
+            self.assertEqual(err.getvalue(), f"todo: there is no todo {number}\n")
         self.assertEqual(Path(self.file).read_text(encoding="utf-8"), before)
 
     def test_add_refuses_empty_text(self):
