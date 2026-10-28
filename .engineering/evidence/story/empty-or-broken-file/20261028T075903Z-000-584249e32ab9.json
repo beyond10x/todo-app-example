@@ -1,0 +1,13 @@
+{
+  "at": "2026-10-28T07:59:03Z",
+  "actor": "agent:takt",
+  "artifact": "story:empty-or-broken-file",
+  "kind": "story",
+  "revision": 4,
+  "change": {
+    "change": "evidence",
+    "kind": "test_result",
+    "source": "takt",
+    "reference": ".takt/cases/scenario-3-trial-343/evidence/0005-test-result-7.json#sha256=6272c932514ed2d4a584a7eb5f6bb216340cfbe43168a087de7751531894bfcd&result=pass&revision=c879499d1fcc376ca4c335f842f86b8d1587ff6a&producer=takt.tests-run"
+  }
+}
