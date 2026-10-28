@@ -2,7 +2,7 @@
 format: aep.planning-md/3
 id: story:priorities
 kind: story
-status: proposed
+status: implemented
 title: Give a todo a priority and list by it
 summary: add --priority high|normal|low; list --sort priority keeps each todo's number; old files load as normal
 scope:
@@ -12,9 +12,11 @@ scope:
   path: tests/test_todo.py
 - confidence: cited
   path: todo.py
-revision: 3
+revision: 5
 transitions:
 - {from: "draft", to: "proposed", at: "2026-10-18T20:35:31Z", actor: "human:timo", revision: 3}
+- {from: "proposed", to: "active", at: "2026-10-28T07:54:35Z", actor: "human:timo", revision: 4, executor: "agent:takt"}
+- {from: "active", to: "implemented", at: "2026-10-28T08:03:38Z", actor: "agent:takt", revision: 5, decided_on: {"recorded":{"test_result":1,"approval":1}}}
 ---
 # Story: priorities
 

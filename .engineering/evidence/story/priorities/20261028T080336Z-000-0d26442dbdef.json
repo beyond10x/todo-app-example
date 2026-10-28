@@ -1,0 +1,13 @@
+{
+  "at": "2026-10-28T08:03:36Z",
+  "actor": "agent:takt-trial",
+  "artifact": "story:priorities",
+  "kind": "story",
+  "revision": 4,
+  "change": {
+    "change": "evidence",
+    "kind": "approval",
+    "source": "takt approve repository.merge --by agent:takt-trial at 8a16547880d181ad2709ec76805fae4eaf7c3cda",
+    "reference": "scenario-2-trial-341/authority.yaml"
+  }
+}

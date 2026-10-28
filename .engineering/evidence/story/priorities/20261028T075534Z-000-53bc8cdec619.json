@@ -1,0 +1,13 @@
+{
+  "at": "2026-10-28T07:55:34Z",
+  "actor": "agent:takt",
+  "artifact": "story:priorities",
+  "kind": "story",
+  "revision": 4,
+  "change": {
+    "change": "evidence",
+    "kind": "test_result",
+    "source": "takt",
+    "reference": ".takt/cases/scenario-2-trial-341/evidence/0005-test-result-7.json#sha256=6167335de3a9c758d5b31ba0cbf5b28010c8cc93851d2b65cd5dc35ec4d9f605&result=pass&revision=8a16547880d181ad2709ec76805fae4eaf7c3cda&producer=takt.tests-run"
+  }
+}
