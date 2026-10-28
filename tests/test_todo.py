@@ -1,7 +1,7 @@
 import io
 import tempfile
 import unittest
-from contextlib import redirect_stdout
+from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
 
 import todo
@@ -29,6 +29,28 @@ class TodoTest(unittest.TestCase):
         self.assertEqual(self.run_cli("list"), (0, ""))
         self.assertEqual(self.run_cli("add", "buy milk")[0], 0)
         self.assertEqual(self.run_cli("list"), (0, "1. [ ] buy milk\n"))
+
+    def test_a_file_of_white_space_is_an_empty_list(self):
+        Path(self.file).write_text(" \n\t\n", encoding="utf-8")
+        self.assertEqual(self.run_cli("list"), (0, ""))
+        self.assertEqual(self.run_cli("add", "buy milk")[0], 0)
+        self.assertEqual(self.run_cli("list"), (0, "1. [ ] buy milk\n"))
+
+    def assert_refused(self, content):
+        Path(self.file).write_text(content, encoding="utf-8")
+        for args in (["list"], ["add", "buy milk"], ["done", "1"], ["remove", "1"]):
+            err = io.StringIO()
+            with redirect_stderr(err):
+                code, out = self.run_cli(*args)
+            self.assertEqual((code, out), (1, ""), args)
+            self.assertEqual(err.getvalue(), f"todo: {self.file} is not a todo list\n", args)
+            self.assertEqual(Path(self.file).read_text(encoding="utf-8"), content, args)
+
+    def test_a_file_that_is_not_json_is_refused(self):
+        self.assert_refused("buy milk\n")
+
+    def test_a_file_holding_a_json_object_is_refused(self):
+        self.assert_refused('{"text": "buy milk", "done": false}\n')
 
     def test_add_then_list(self):
         self.assertEqual(self.run_cli("add", "buy milk")[0], 0)
