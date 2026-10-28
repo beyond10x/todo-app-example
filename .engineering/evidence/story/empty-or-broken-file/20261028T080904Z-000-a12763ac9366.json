@@ -1,0 +1,13 @@
+{
+  "at": "2026-10-28T08:09:04Z",
+  "actor": "agent:takt-trial",
+  "artifact": "story:empty-or-broken-file",
+  "kind": "story",
+  "revision": 4,
+  "change": {
+    "change": "evidence",
+    "kind": "approval",
+    "source": "takt approve repository.merge --by agent:takt-trial at c879499d1fcc376ca4c335f842f86b8d1587ff6a",
+    "reference": "scenario-3-trial-343/authority.yaml"
+  }
+}
