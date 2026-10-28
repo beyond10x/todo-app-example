@@ -2,7 +2,7 @@
 format: aep.planning-md/3
 id: story:undo-a-todo
 kind: story
-status: active
+status: implemented
 title: Undo a done todo by its number
 summary: todo.py undo N marks item N not done; an unknown number is refused
 scope:
@@ -10,10 +10,11 @@ scope:
   path: tests/test_todo.py
 - confidence: cited
   path: todo.py
-revision: 4
+revision: 5
 transitions:
 - {from: "draft", to: "proposed", at: "2026-10-18T20:39:19Z", actor: "human:timo", revision: 3}
 - {from: "proposed", to: "active", at: "2026-10-28T06:40:40Z", actor: "human:timo", revision: 4, executor: "agent:takt"}
+- {from: "active", to: "implemented", at: "2026-10-28T06:42:29Z", actor: "agent:takt", revision: 5, decided_on: {"recorded":{"test_result":1,"approval":1}}}
 ---
 # Story: undo-a-todo
 
