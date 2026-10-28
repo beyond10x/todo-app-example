@@ -1,7 +1,7 @@
 import io
 import tempfile
 import unittest
-from contextlib import redirect_stdout
+from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
 
 import todo
@@ -17,7 +17,8 @@ class TodoTest(unittest.TestCase):
 
     def run_cli(self, *args):
         out = io.StringIO()
-        with redirect_stdout(out):
+        err = io.StringIO()
+        with redirect_stdout(out), redirect_stderr(err):
             code = todo.main(["--file", self.file, *args])
         return code, out.getvalue()
 
@@ -43,6 +44,25 @@ class TodoTest(unittest.TestCase):
         self.run_cli("add", "buy milk")
         self.assertEqual(self.run_cli("done", "2")[0], 1)
         self.assertEqual(self.run_cli("done", "0")[0], 1)
+
+    def test_remove_shifts_later_items_up(self):
+        for text in ("first", "second", "third"):
+            self.assertEqual(self.run_cli("add", text)[0], 0)
+
+        self.assertEqual(self.run_cli("remove", "2")[0], 0)
+        self.assertEqual(
+            self.run_cli("list"), (0, "1. [ ] first\n2. [ ] third\n")
+        )
+
+    def test_remove_refuses_out_of_range_without_changing_file(self):
+        for text in ("first", "second", "third"):
+            self.assertEqual(self.run_cli("add", text)[0], 0)
+
+        original = Path(self.file).read_bytes()
+        for number in ("0", "4"):
+            with self.subTest(number=number):
+                self.assertEqual(self.run_cli("remove", number)[0], 1)
+                self.assertEqual(Path(self.file).read_bytes(), original)
 
     def test_add_refuses_empty_text(self):
         with self.assertRaises(ValueError):
