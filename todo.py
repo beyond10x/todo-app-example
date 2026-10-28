@@ -14,7 +14,16 @@ def load(path):
     path = Path(path)
     if not path.exists():
         return []
-    return json.loads(path.read_text(encoding="utf-8"))
+    text = path.read_text(encoding="utf-8")
+    if not text.strip():
+        return []
+    try:
+        items = json.loads(text)
+    except json.JSONDecodeError:
+        items = None
+    if not isinstance(items, list):
+        raise ValueError(f"{path} is not a todo list")
+    return items
 
 
 def save(path, items):
@@ -63,8 +72,8 @@ def main(argv=None):
     remove_command.add_argument("number", type=int)
     args = parser.parse_args(argv)
 
-    items = load(args.file)
     try:
+        items = load(args.file)
         if args.command == "add":
             save(args.file, add(items, args.text))
         elif args.command == "done":
