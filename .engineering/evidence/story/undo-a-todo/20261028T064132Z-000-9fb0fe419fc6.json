@@ -1,0 +1,13 @@
+{
+  "at": "2026-10-28T06:41:32Z",
+  "actor": "agent:takt",
+  "artifact": "story:undo-a-todo",
+  "kind": "story",
+  "revision": 4,
+  "change": {
+    "change": "evidence",
+    "kind": "test_result",
+    "source": "takt",
+    "reference": ".takt/cases/scenario-5-trial-338/evidence/0007-test-result-10.json#sha256=50ae397c1152ef5b7e10b133a1a183e0ba877384f8625b8779f39373eb1c3946&result=pass&revision=ef92e6c63a8e047ea7b6a66fb96ffd788a2412a1&producer=takt.tests-run"
+  }
+}
