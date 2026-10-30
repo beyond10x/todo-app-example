@@ -6,9 +6,16 @@ ready stories, a gate, CI on every pull request, and merges through the bot rout
 
 ```
 ./todo.py add "buy milk"
+./todo.py add "call home" --priority high
 ./todo.py list
+./todo.py list --sort priority
 ./todo.py done 1
 ./check.sh            # the tests
 ```
+
+`add --priority` accepts `high`, `normal`, or `low` (default: `normal`).
+`list --sort priority` shows todos in high-to-low priority order while keeping their original todo
+numbers, so `done N` and `remove N` continue to refer to the number shown. Normal-priority todos
+are displayed without a priority label.
 
 Items live in `todo.json` in the working directory, or in the file `--file` or `TODO_FILE` names.

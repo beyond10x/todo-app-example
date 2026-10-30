@@ -21,11 +21,17 @@ def save(path, items):
     Path(path).write_text(json.dumps(items, indent=2) + "\n", encoding="utf-8")
 
 
-def add(items, text):
+PRIORITIES = ("high", "normal", "low")
+PRIORITY_ORDER = {priority: rank for rank, priority in enumerate(PRIORITIES)}
+
+
+def add(items, text, priority="normal"):
     text = text.strip()
     if not text:
         raise ValueError("a todo needs some text")
-    items.append({"text": text, "done": False})
+    if priority not in PRIORITIES:
+        raise ValueError(f"unknown priority {priority!r}")
+    items.append({"text": text, "done": False, "priority": priority})
     return items
 
 
@@ -43,20 +49,30 @@ def remove(items, number):
     return items
 
 
-def render(items):
-    return [
-        f"{number}. [{'x' if item['done'] else ' '}] {item['text']}"
-        for number, item in enumerate(items, start=1)
-    ]
+def render(items, sort=None):
+    numbered_items = list(enumerate(items, start=1))
+    if sort == "priority":
+        numbered_items.sort(
+            key=lambda pair: PRIORITY_ORDER.get(pair[1].get("priority", "normal"), len(PRIORITIES))
+        )
+
+    lines = []
+    for number, item in numbered_items:
+        priority = item.get("priority", "normal")
+        label = f"({priority}) " if priority != "normal" else ""
+        lines.append(f"{number}. [{'x' if item['done'] else ' '}] {label}{item['text']}")
+    return lines
 
 
 def main(argv=None):
     parser = argparse.ArgumentParser(prog="todo")
     parser.add_argument("--file", default=os.environ.get("TODO_FILE", DEFAULT_FILE))
     commands = parser.add_subparsers(dest="command", required=True)
-    commands.add_parser("list")
+    list_command = commands.add_parser("list")
+    list_command.add_argument("--sort", choices=("priority",))
     add_command = commands.add_parser("add")
     add_command.add_argument("text")
+    add_command.add_argument("--priority", choices=PRIORITIES, default="normal")
     done_command = commands.add_parser("done")
     done_command.add_argument("number", type=int)
     remove_command = commands.add_parser("remove")
@@ -66,13 +82,13 @@ def main(argv=None):
     items = load(args.file)
     try:
         if args.command == "add":
-            save(args.file, add(items, args.text))
+            save(args.file, add(items, args.text, args.priority))
         elif args.command == "done":
             save(args.file, done(items, args.number))
         elif args.command == "remove":
             save(args.file, remove(items, args.number))
         else:
-            for line in render(items):
+            for line in render(items, args.sort):
                 print(line)
     except ValueError as error:
         print(f"todo: {error}", file=sys.stderr)
