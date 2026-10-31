@@ -18,4 +18,8 @@ ready stories, a gate, CI on every pull request, and merges through the bot rout
 numbers, so `done N` and `remove N` continue to refer to the number shown. Normal-priority todos
 are displayed without a priority label.
 
+`edit N TEXT` replaces a todo's text in place, preserving its number, done mark and priority.
+For example, `./todo.py edit 1 "buy oat milk"`. Surrounding whitespace is stripped, as with `add`.
+Empty text after stripping or a number naming no todo is refused with exit 1, leaving the file unchanged.
+
 Items live in `todo.json` in the working directory, or in the file `--file` or `TODO_FILE` names.

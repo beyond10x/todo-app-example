@@ -1,0 +1,13 @@
+{
+  "at": "2026-10-31T03:58:12Z",
+  "actor": "agent:takt",
+  "artifact": "story:edit-a-todo",
+  "kind": "story",
+  "revision": 4,
+  "change": {
+    "change": "evidence",
+    "kind": "test_result",
+    "source": "takt",
+    "reference": ".takt/cases/story-edit-a-todo-20261031T034727Z/evidence/0004-test-result-7.json#sha256=5b692cfcb36f3b69755839f4842970f8b22fac4b5d54994cbad97a4e14f2e0dc&result=pass&revision=788eb3aa27fcd68b131eef65876a3bb303812cf7&producer=takt.tests-run"
+  }
+}
