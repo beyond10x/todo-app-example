@@ -2,7 +2,7 @@
 format: aep.planning-md/3
 id: story:edit-a-todo
 kind: story
-status: proposed
+status: active
 title: Edit a todo's text in place
 summary: edit N TEXT replaces a todo's text and keeps its number, done mark and priority
 scope:
@@ -12,9 +12,10 @@ scope:
   path: tests/test_todo.py
 - confidence: cited
   path: todo.py
-revision: 3
+revision: 4
 transitions:
 - {from: "draft", to: "proposed", at: "2026-10-31T03:29:12Z", actor: "human:timo", revision: 3}
+- {from: "proposed", to: "active", at: "2026-10-31T03:47:28Z", actor: "human:unknown", revision: 4, executor: "agent:takt"}
 ---
 # Story: edit a todo
 
