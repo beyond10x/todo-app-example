@@ -109,6 +109,36 @@ class TodoTest(unittest.TestCase):
             self.run_cli("list"), (0, "1. [ ] buy milk\n2. [x] water plants\n")
         )
 
+    def test_edit_strips_text_and_preserves_number_done_and_priority(self):
+        self.run_cli("add", "buy milk")
+        self.run_cli("add", "call home", "--priority", "high")
+        self.run_cli("add", "water plants", "--priority", "low")
+        self.run_cli("done", "2")
+        self.assertEqual(self.run_cli("edit", "2", " \tcall grandma\n")[0], 0)
+        self.assertEqual(self.run_cli("edit", "3", "water flowers")[0], 0)
+        self.assertEqual(
+            self.run_cli("list"),
+            (0, "1. [ ] buy milk\n2. [x] (high) call grandma\n"
+                "3. [ ] (low) water flowers\n"),
+        )
+
+    def test_edit_refuses_empty_text_without_changing_the_file(self):
+        self.run_cli("add", "buy milk", "--priority", "high")
+        before = Path(self.file).read_bytes()
+        for text in ("", " \t\n "):
+            with self.subTest(text=text):
+                self.assertEqual(self.run_cli("edit", "1", text)[0], 1)
+                self.assertEqual(Path(self.file).read_bytes(), before)
+
+    def test_edit_refuses_missing_numbers_without_changing_the_file(self):
+        self.run_cli("add", "buy milk")
+        self.run_cli("add", "call home")
+        before = Path(self.file).read_bytes()
+        for number in ("0", "-1", "3"):
+            with self.subTest(number=number):
+                self.assertEqual(self.run_cli("edit", number, "new text")[0], 1)
+                self.assertEqual(Path(self.file).read_bytes(), before)
+
 
 if __name__ == "__main__":
     unittest.main()
